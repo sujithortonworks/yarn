@@ -1,0 +1,54 @@
+{
+  "name": "hiveserver-service",
+  "version": "1.0.0",
+  "queue": "default",
+  "configuration": {
+    "properties": {
+    }
+  },
+  "components": [
+    {
+      "name": "hiveserver",
+      "number_of_containers": 10,
+      "launch_command": "lib/hive/bin/hiveserver2 --hiveconf hive.server2.authentication.kerberos.principal=hive/e1.hdp3.com@HDP3.COM --hiveconf hive.server2.authentication.kerberos.keytab=lib/hive/conf/hive.service.keytab",
+      "artifact": {
+        "id": "hiveserver.tgz",
+        "type": "TARBALL"
+      },
+      "resource": {
+        "cpus": 1,
+        "memory": "1024"
+      },
+      "placement_policy": {
+
+        "constraints": [
+
+          {
+
+            "type": "ANTI_AFFINITY",
+
+            "scope": "NODE",
+
+            "target_tags": [ "hiveserver" ]
+
+          }
+
+        ]
+
+      },
+
+      "configuration": {
+        "env": {
+          "JAVA_HOME": "/base/tools/jdk1.8.0_112",
+          "HIVE_HOME":"$PWD/lib/hive"
+          }
+      }
+    }
+  ],
+  "quicklinks": {
+  },
+  "kerberos_principal" : {
+    "principal_name" : "hive/_HOST@HDP3.COM",
+    "keytab" : "file:///etc/security/keytabs/hive.service.keytab"
+  }
+}
